@@ -1,7 +1,8 @@
 import "react-native-gesture-handler";
+import { useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
 import Animated, {
   SharedValue,
   interpolate,
@@ -10,8 +11,6 @@ import Animated, {
   withTiming,
   interpolateColor,
 } from "react-native-reanimated";
-import { useMemo, useRef, useState } from "react";
-import BottomSheet from "@gorhom/bottom-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const SIZE = 70;
@@ -20,6 +19,8 @@ interface CircleProps {
   onPress: () => void;
   animatedValue: SharedValue<number>;
 }
+
+const AnimatedIcon = Animated.createAnimatedComponent(Ionicons);
 
 const Circle = ({ onPress, animatedValue }: CircleProps) => {
   const inputRange = [0, 0.5, 1];
@@ -71,7 +72,11 @@ const Circle = ({ onPress, animatedValue }: CircleProps) => {
       <Animated.View style={[styles.circle, animatedCircleStyle]}>
         <TouchableOpacity onPress={onPress}>
           <View style={[styles.circle, styles.circleButton]}>
-            <AntDesign name="arrowright" size={28} color={"white"} />
+            <AnimatedIcon
+              name="chevron-forward-sharp"
+              size={28}
+              color={"white"}
+            />
           </View>
         </TouchableOpacity>
       </Animated.View>
@@ -82,10 +87,6 @@ const Circle = ({ onPress, animatedValue }: CircleProps) => {
 export default function App() {
   const animatedValue = useSharedValue(0);
   const [pressed, setPressed] = useState<boolean>(false);
-  const bottomSheetRef = useRef<BottomSheet>(null);
-
-  // variables
-  const snapPoints = useMemo(() => ["35%"], []);
 
   const animate = () => {
     setPressed(!pressed);
@@ -101,19 +102,6 @@ export default function App() {
       <View style={styles.container}>
         <StatusBar style="light" />
         <Circle onPress={animate} animatedValue={animatedValue} />
-        {/* <BottomSheet
-          ref={bottomSheetRef}
-          snapPoints={snapPoints}
-          // add bottom inset to elevate the sheet
-          bottomInset={30}
-          // set `detached` to true
-          detached={true}
-          style={styles.sheetContainer}
-        >
-          <View style={styles.contentContainer}>
-            <Text>select speed 🔥</Text>
-          </View>
-        </BottomSheet> */}
       </View>
     </GestureHandlerRootView>
   );
