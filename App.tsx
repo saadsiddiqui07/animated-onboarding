@@ -12,6 +12,7 @@ import Animated, {
   interpolateColor,
 } from "react-native-reanimated";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { quotes } from "./src/conatnts";
 
 const SIZE = 70;
 
@@ -87,6 +88,7 @@ const Circle = ({ onPress, animatedValue }: CircleProps) => {
 export default function App() {
   const animatedValue = useSharedValue(0);
   const [pressed, setPressed] = useState<boolean>(false);
+  const inputRange = [...Array(quotes.length).keys()];
 
   const animate = () => {
     setPressed(!pressed);
@@ -110,6 +112,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: "flex-start",
+    paddingTop: 100,
   },
   circleContainer: {
     flex: 1,
